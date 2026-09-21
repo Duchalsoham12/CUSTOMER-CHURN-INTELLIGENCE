@@ -1,0 +1,14 @@
+import { ArrowUpDown, ChevronLeft, ChevronRight, ExternalLink, Search } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+import type { Customer } from "../../types";
+import { StatusBadge } from "../ui/StatusBadge";
+
+export function CustomerTable({ rows }: { rows: Customer[] }) {
+  const [query, setQuery] = useState(""); const [risk, setRisk] = useState("All risk"); const [page, setPage] = useState(1);
+  const filtered = useMemo(() => rows.filter((row) => `${row.name} ${row.id} ${row.segment}`.toLowerCase().includes(query.toLowerCase()) && (risk === "All risk" || row.risk === risk)), [query, risk, rows]);
+  const pages = Math.max(1, Math.ceil(filtered.length / 5)); const visible = filtered.slice((page - 1) * 5, page * 5);
+  return <div className="table-card"><div className="table-toolbar"><div className="table-search"><SearchIcon /><input placeholder="Search customers..." value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} /></div><select value={risk} onChange={(event) => { setRisk(event.target.value); setPage(1); }}><option>All risk</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select><button className="icon-button" aria-label="Sort"><ArrowUpDown size={16} /></button></div><div className="table-scroll"><table className="data-table"><thead><tr><th>Customer</th><th>Segment</th><th>Churn risk</th><th>Customer value</th><th>Revenue at risk</th><th>Risk reason</th><th>Action</th><th /></tr></thead><tbody>{visible.map((row) => <tr key={row.id}><td><Link className="customer-name" to={`/customers/${row.id}`}>{row.name}<small>{row.id}</small></Link></td><td><span className="segment-badge">{row.segment}</span></td><td><StatusBadge risk={row.risk} /><small className="probability">{Math.round(row.churnProbability * 100)}% probability</small></td><td className="money">${row.customerValue.toLocaleString()}</td><td className="money risk-money">${row.revenueAtRisk.toLocaleString()}</td><td>{row.reason}</td><td><span className="action-text">{row.action}</span></td><td><Link to={`/customers/${row.id}`} className="row-link" aria-label={`Open ${row.name}`}><ExternalLink size={15} /></Link></td></tr>)}</tbody></table>{visible.length === 0 && <div className="empty-state">No customers match these filters.</div>}</div><div className="pagination"><span>Showing {visible.length} of {filtered.length} customers</span><div><button disabled={page <= 1} onClick={() => setPage(page - 1)}><ChevronLeft size={15} /></button><b>{page}</b><button disabled={page >= pages} onClick={() => setPage(page + 1)}><ChevronRight size={15} /></button></div></div></div>;
+}
+
+function SearchIcon() { return <Search size={16} />; }

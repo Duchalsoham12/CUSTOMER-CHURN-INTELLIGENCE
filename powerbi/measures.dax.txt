@@ -1,0 +1,17 @@
+Total Customers = DISTINCTCOUNT(vw_customer_analytics[external_customer_id])
+
+Total Revenue = SUM(vw_customer_analytics[mrr_usd])
+
+Average Customer Value = DIVIDE([Total Revenue], [Total Customers])
+
+Prediction Count = COUNTROWS(vw_revenue_risk)
+
+Average Churn Probability = AVERAGE(vw_revenue_risk[churn_probability])
+
+Revenue at Risk = SUM(vw_revenue_risk[revenue_at_risk_usd])
+
+High Risk Customers = CALCULATE([Prediction Count], vw_revenue_risk[risk_level] IN {"high", "churned"})
+
+High Priority Actions = CALCULATE(COUNTROWS(vw_retention_actions), vw_retention_actions[priority] IN {"critical", "high"})
+
+-- These measures use persisted prediction/action views. Historical churn and date-based retention measures require source event dates.

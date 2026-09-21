@@ -1,0 +1,10 @@
+.git
+.env
+.venv
+.venv-1
+node_modules
+frontend/dist
+__pycache__
+.pytest_cache
+ml/artifacts/*.joblib
+data/raw

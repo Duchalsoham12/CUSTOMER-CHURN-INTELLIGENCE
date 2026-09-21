@@ -1,0 +1,29 @@
+[
+  {
+    "model": "logistic_regression",
+    "model_version": "churn_logistic_v1",
+    "precision": 0.5,
+    "recall": 0.75,
+    "f1": 0.6,
+    "roc_auc": 0.9328,
+    "pr_auc": 0.6782
+  },
+  {
+    "model": "random_forest",
+    "model_version": "churn_rf_v1",
+    "precision": 0.7273,
+    "recall": 0.6667,
+    "f1": 0.6957,
+    "roc_auc": 0.9536,
+    "pr_auc": 0.7279
+  },
+  {
+    "model": "xgboost",
+    "model_version": "churn_xgb_v1",
+    "precision": 0.6,
+    "recall": 0.25,
+    "f1": 0.3529,
+    "roc_auc": 0.9271,
+    "pr_auc": 0.6197
+  }
+]

@@ -1,0 +1,208 @@
+{
+  "model_version": "churn_rf_v1",
+  "causal_warning": "Feature importance and SHAP values explain model behavior, not causation.",
+  "feature_importance": [
+    {
+      "feature": "numeric__word_count",
+      "importance": 0.1178282
+    },
+    {
+      "feature": "numeric__discount_offered_pct",
+      "importance": 0.11211362
+    },
+    {
+      "feature": "numeric__turn_count",
+      "importance": 0.10989147
+    },
+    {
+      "feature": "numeric__tenure_months",
+      "importance": 0.04778091
+    },
+    {
+      "feature": "categorical__sentiment_arc_positive_to_negative",
+      "importance": 0.03326053
+    },
+    {
+      "feature": "numeric__per_seat_price_usd",
+      "importance": 0.03255847
+    },
+    {
+      "feature": "categorical__channel_live_chat",
+      "importance": 0.02783068
+    },
+    {
+      "feature": "numeric__seats",
+      "importance": 0.02652379
+    },
+    {
+      "feature": "numeric__active_seats",
+      "importance": 0.02645297
+    },
+    {
+      "feature": "numeric__mrr_usd",
+      "importance": 0.02579003
+    },
+    {
+      "feature": "categorical__injection_style_elicited",
+      "importance": 0.02550527
+    },
+    {
+      "feature": "categorical__sentiment_arc_aggressive_throughout",
+      "importance": 0.024934
+    },
+    {
+      "feature": "categorical__injection_style_opening_dump",
+      "importance": 0.02280275
+    },
+    {
+      "feature": "categorical__injection_style_billing_forensic",
+      "importance": 0.02039904
+    },
+    {
+      "feature": "categorical__injection_style_escalation_frame",
+      "importance": 0.01649321
+    },
+    {
+      "feature": "categorical__channel_phone_transcript",
+      "importance": 0.01291547
+    },
+    {
+      "feature": "categorical__sentiment_arc_mixed_signals",
+      "importance": 0.01264067
+    },
+    {
+      "feature": "categorical__sentiment_arc_negative_to_neutral",
+      "importance": 0.01208695
+    },
+    {
+      "feature": "categorical__agent_persona_transactional",
+      "importance": 0.01101391
+    },
+    {
+      "feature": "categorical__sentiment_arc_passive_aggressive",
+      "importance": 0.01012935
+    },
+    {
+      "feature": "categorical__injection_style_drip",
+      "importance": 0.00950879
+    },
+    {
+      "feature": "categorical__agent_persona_empathetic",
+      "importance": 0.00856426
+    },
+    {
+      "feature": "categorical__injection_style_exit_notice",
+      "importance": 0.0085525
+    },
+    {
+      "feature": "categorical__plan_type_annual",
+      "importance": 0.00845728
+    },
+    {
+      "feature": "categorical__sentiment_arc_polite_but_firm_exit",
+      "importance": 0.00839911
+    },
+    {
+      "feature": "categorical__product_category_analytics_dashboard",
+      "importance": 0.00800286
+    },
+    {
+      "feature": "categorical__customer_tenure_trial",
+      "importance": 0.00790736
+    },
+    {
+      "feature": "categorical__plan_type_monthly",
+      "importance": 0.00742801
+    },
+    {
+      "feature": "categorical__customer_persona_frustrated",
+      "importance": 0.00704945
+    },
+    {
+      "feature": "categorical__customer_persona_weary",
+      "importance": 0.00617427
+    },
+    {
+      "feature": "categorical__sentiment_arc_hopeful_then_disappointed",
+      "importance": 0.00615144
+    },
+    {
+      "feature": "categorical__plan_name_Growth",
+      "importance": 0.00607769
+    },
+    {
+      "feature": "categorical__plan_name_Scale",
+      "importance": 0.00606143
+    },
+    {
+      "feature": "categorical__customer_tenure_0-3_months",
+      "importance": 0.00604214
+    },
+    {
+      "feature": "categorical__customer_tenure_6-12_months",
+      "importance": 0.0058496
+    },
+    {
+      "feature": "categorical__agent_persona_senior_calm",
+      "importance": 0.00557995
+    },
+    {
+      "feature": "categorical__plan_name_Starter",
+      "importance": 0.00548361
+    },
+    {
+      "feature": "categorical__company_size_startup",
+      "importance": 0.00543393
+    },
+    {
+      "feature": "categorical__customer_persona_analytical",
+      "importance": 0.00539786
+    },
+    {
+      "feature": "categorical__company_size_midmarket",
+      "importance": 0.00519527
+    },
+    {
+      "feature": "categorical__plan_name_Business",
+      "importance": 0.00518157
+    },
+    {
+      "feature": "categorical__channel_support_ticket",
+      "importance": 0.00513188
+    },
+    {
+      "feature": "categorical__customer_tenure_3+_years",
+      "importance": 0.00511196
+    },
+    {
+      "feature": "categorical__sentiment_arc_steady_negative",
+      "importance": 0.00501098
+    },
+    {
+      "feature": "categorical__customer_persona_anxious_smb_owner",
+      "importance": 0.00489973
+    },
+    {
+      "feature": "categorical__customer_persona_matter_of_fact",
+      "importance": 0.00473745
+    },
+    {
+      "feature": "categorical__customer_tenure_1-2_years",
+      "importance": 0.00441045
+    },
+    {
+      "feature": "categorical__product_category_design_tool",
+      "importance": 0.00439391
+    },
+    {
+      "feature": "categorical__product_category_crm_platform",
+      "importance": 0.00438464
+    },
+    {
+      "feature": "categorical__customer_persona_diplomatic",
+      "importance": 0.00436367
+    }
+  ],
+  "shap_status": "unavailable",
+  "shap_note": "Cannot cast ufunc 'isnan' input from dtype('O') to dtype('bool') with casting rule 'same_kind'"
+}

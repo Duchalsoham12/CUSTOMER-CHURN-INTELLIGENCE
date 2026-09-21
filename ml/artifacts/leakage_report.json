@@ -1,0 +1,16 @@
+{
+  "target": "churn",
+  "target_definition": "resolution_outcome in explicit churned outcome categories",
+  "leakage_columns_excluded": {
+    "resolution_outcome": "post-interaction outcome used to derive the target",
+    "churn_risk_level": "source risk assessment label, not an input feature",
+    "conversation": "free text can contain post-outcome and target-identifying language",
+    "summary": "summary can contain target-identifying outcome language",
+    "churn_signals": "source signal annotation is target-adjacent and excluded",
+    "conversation_id": "identifier, not a predictive feature"
+  },
+  "churned_customers": 61,
+  "retained_customers": 439,
+  "churn_percentage": 12.2,
+  "status": "passed"
+}

@@ -1,0 +1,114 @@
+{
+  "model": "logistic_regression",
+  "model_version": "churn_logistic_v1",
+  "metrics": {
+    "threshold": 0.5,
+    "precision": 0.5,
+    "recall": 0.75,
+    "f1": 0.6,
+    "roc_auc": 0.9328,
+    "pr_auc": 0.6782,
+    "confusion_matrix": [
+      [
+        79,
+        9
+      ],
+      [
+        3,
+        9
+      ]
+    ]
+  },
+  "threshold_analysis": [
+    {
+      "threshold": 0.3,
+      "precision": 0.44,
+      "recall": 0.9167,
+      "f1": 0.5946,
+      "roc_auc": 0.9328,
+      "pr_auc": 0.6782,
+      "confusion_matrix": [
+        [
+          74,
+          14
+        ],
+        [
+          1,
+          11
+        ]
+      ]
+    },
+    {
+      "threshold": 0.4,
+      "precision": 0.5,
+      "recall": 0.75,
+      "f1": 0.6,
+      "roc_auc": 0.9328,
+      "pr_auc": 0.6782,
+      "confusion_matrix": [
+        [
+          79,
+          9
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    {
+      "threshold": 0.5,
+      "precision": 0.5,
+      "recall": 0.75,
+      "f1": 0.6,
+      "roc_auc": 0.9328,
+      "pr_auc": 0.6782,
+      "confusion_matrix": [
+        [
+          79,
+          9
+        ],
+        [
+          3,
+          9
+        ]
+      ]
+    },
+    {
+      "threshold": 0.6,
+      "precision": 0.5333,
+      "recall": 0.6667,
+      "f1": 0.5926,
+      "roc_auc": 0.9328,
+      "pr_auc": 0.6782,
+      "confusion_matrix": [
+        [
+          81,
+          7
+        ],
+        [
+          4,
+          8
+        ]
+      ]
+    },
+    {
+      "threshold": 0.7,
+      "precision": 0.5833,
+      "recall": 0.5833,
+      "f1": 0.5833,
+      "roc_auc": 0.9328,
+      "pr_auc": 0.6782,
+      "confusion_matrix": [
+        [
+          83,
+          5
+        ],
+        [
+          5,
+          7
+        ]
+      ]
+    }
+  ]
+}
