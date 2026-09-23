@@ -1,13 +1,15 @@
 # CustomerIQ — Customer Intelligence & Churn Analytics Platform
 
-[![CI](https://github.com/placeholder/customer-churn-intelligence/actions/workflows/ci.yml/badge.svg)](https://github.com/placeholder/customer-churn-intelligence)
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
+[![CI](https://github.com/Duchalsoham12/CUSTOMER-CHURN-INTELLIGENCE/actions/workflows/ci.yml/badge.svg)](https://github.com/Duchalsoham12/CUSTOMER-CHURN-INTELLIGENCE/actions)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com/)
 [![React 19](https://img.shields.io/badge/React-19.0-61dafb.svg)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-6.0+-646CFF.svg)](https://vitejs.dev/)
 [![PostgreSQL 16](https://img.shields.io/badge/PostgreSQL-16-336791.svg)](https://www.postgresql.org/)
+[![SHAP](https://img.shields.io/badge/TreeSHAP-Explainability-ff69b4.svg)](https://shap.readthedocs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-An enterprise-grade B2B customer intelligence, churn prediction, and retention analytics platform. CustomerIQ integrates leakage-aware machine learning pipelines, a normalized PostgreSQL analytical schema, and a responsive React 19 single-page application to transform customer usage signals into prioritized operational workflows.
+An enterprise-grade full-stack B2B customer intelligence, churn prediction, and retention analytics platform. CustomerIQ integrates leakage-aware machine learning pipelines, a normalized PostgreSQL analytical schema, local TreeSHAP explainability, an interactive What-If financial simulator, an automated GenAI retention outreach copilot, and a "Talk to Your Data" natural language Text-to-SQL assistant.
 
 ---
 
@@ -57,12 +59,18 @@ CustomerIQ solves these challenges with an explainable prioritization formula, s
 - **Executive Portfolio Health**: Real-time KPI summaries covering 500 accounts, observed churn rates (12.2%), portfolio MRR, and revenue at risk.
 - **Customer Intelligence Directory**: Searchable, paginated customer directory with filtering by risk level, billing cycle, and persona.
 - **Account 360 Deep-Dive**: Granular account profiles displaying seat utilization, business friction signals, rule-based recommendations, and model boundary states.
-- **Pattern Discovery Analytics**: Empirical churn rates broken down by subscription plan and contract duration bands.
+- **TreeSHAP Local Explainability**: Interactive per-customer waterfall chart displaying base expected value $E[f(x)]$, positive feature risk pushes, and negative mitigating factors.
+- **Generative AI Retention Copilot**: Contextual outreach generator producing personalized emails, executive escalation briefs, and concession strategies across 4 tones (Empathetic, Executive, Urgent, VIP Offer).
+- **Interactive "What-If" Revenue Simulator**: Vectorized policy scenario planner calculating preserved MRR, concession costs, and campaign ROI % from discount, support SLA, and feature adoption levers.
+- **"Talk to Your Data" Natural Language AI Assistant**: Floating AI drawer that translates natural language questions into safe SQL, returning executive insights, dynamic data tables, and inline charts.
+- **Causal ML & Uplift Modeling Matrix**: 2x2 framework isolating *Persuadables* (high ROI) from *Sleeping Dogs* (do not disturb) to eliminate wasted retention spend.
+- **Real-Time Webhook Alerting Engine**: Direct dispatch of rich formatted notification cards to Slack and Discord for high-vulnerability accounts.
+- **Intervention Audit Trail**: Timestamped activity log tracking account outreach, playbooks, and communications.
 - **Financial Exposure Analytics**: Quantification and segmentation of exposed revenue by risk tier.
 - **RFM Proxy Segmentation**: Quantile-based customer clustering into *Champions*, *Loyal Customers*, *Potential Loyalists*, and *At Risk*.
 - **Retention Action Center**: Prioritized operational queue (Critical, High, Medium, Low) scoring probability, MRR, exposure, and seat engagement.
 - **Automated Data Quality Profiler**: File upload dropzone validating CSV schemas, column missingness, duplicate rows, and data anomalies.
-- **Full CSV Exportability**: 5 dedicated UTF-8 BOM CSV exports for spreadsheet analysis.
+- **Full CSV Exportability**: 6 dedicated UTF-8 BOM CSV exports for spreadsheet analysis.
 
 ---
 
