@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AppLayout } from "./components/layout/AppLayout";
 import { LandingPage } from "./pages/Pages";
 import { RealDashboardPage } from "./pages/RealDashboardPage";
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Routes>
+      <SpeedInsights />
     </BrowserRouter>
   );
 }
