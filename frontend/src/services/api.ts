@@ -36,6 +36,16 @@ export const api = {
   predict: (customerId: string) => request("/predict", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ customer_id: customerId }) }),
   getRetentionOverview: () => request("/retention/overview"),
   getRetentionQueue: (query = "") => request(`/retention/queue${query ? `?${query}` : ""}`),
-  updateRetentionAction: (id: string, body: unknown) => request(`/retention/actions/${encodeURIComponent(id)}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
   uploadDataset: (file: File) => { const form = new FormData(); form.append("file", file); return request("/upload", { method: "POST", body: form }); },
+  getCustomerShap: (id: string) => request<any>(`/customers/${encodeURIComponent(id)}/shap`),
+  generateRetentionOutreach: (customerId: string, tone = "empathetic", customNotes?: string) =>
+    request<any>("/retention/generate-outreach", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ customer_id: customerId, tone, custom_notes: customNotes }) }),
+  simulateScenario: (params: { discount_pct: number; support_sla_reduction_pct: number; feature_adoption_boost: number; target_tier: string }) =>
+    request<any>("/analytics/simulate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(params) }),
+  getUpliftSegmentation: () => request<any>("/analytics/uplift"),
+  triggerWebhookAlert: (customerId: string, channel = "slack", webhookUrl?: string, note?: string) =>
+    request<any>("/webhooks/alert", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ customer_id: customerId, channel, webhook_url: webhookUrl, note }) }),
+  getActionHistory: (customerId: string) => request<any>(`/retention/history/${encodeURIComponent(customerId)}`),
+  logAction: (body: { customer_id: string; action_type: string; channel?: string; tone?: string; notes: string; performed_by?: string }) =>
+    request<any>("/retention/log-action", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
 };

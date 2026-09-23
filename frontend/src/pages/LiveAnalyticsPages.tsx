@@ -193,6 +193,13 @@ export function LiveChurnPage() {
 
 export function LiveSegmentsPage() {
   const state = useApi(() => api.getSegments());
+  const [activeTab, setActiveTab] = useState<"rfm" | "uplift">("rfm");
+  const [upliftData, setUpliftData] = useState<any>(null);
+
+  useEffect(() => {
+    api.getUpliftSegmentation().then(setUpliftData).catch(console.error);
+  }, []);
+
   const data = state.data as {
     segments?: { name: string; customers: number }[];
     items?: { customer_id: string; segment: string; monetary_proxy: number; engagement_proxy: number }[];
@@ -217,47 +224,234 @@ export function LiveSegmentsPage() {
     });
   };
 
+  const handleExportUpliftCsv = () => {
+    if (!upliftData?.quadrants) return;
+    const rows: any[] = [];
+    Object.entries(upliftData.quadrants).forEach(([key, q]: [string, any]) => {
+      q.sample_accounts?.forEach((acc: any) => {
+        rows.push({
+          quadrant: q.title,
+          customer_id: acc.customer_id,
+          mrr: acc.mrr_usd,
+          tenure: acc.tenure_months,
+          risk: acc.risk_level,
+          strategy: q.recommended_strategy,
+        });
+      });
+    });
+    downloadCsv("causal-uplift-segments.csv", rows, {
+      quadrant: "Uplift Quadrant",
+      customer_id: "Customer ID",
+      mrr: "MRR ($)",
+      tenure: "Tenure (Months)",
+      risk: "Risk Level",
+      strategy: "Prescribed Strategy",
+    });
+  };
+
   return (
     <State {...state}>
       <div className="page-header">
         <div>
-          <span className="eyebrow">Segmentation</span>
-          <h1>RFM proxy segments</h1>
-          <p>{data?.method ?? "Proxy segmentation: MRR x tenure for monetary value; seat utilization for engagement."}</p>
+          <span className="eyebrow">Customer Segmentation</span>
+          <h1>{activeTab === "rfm" ? "RFM Proxy Segments" : "Causal ML & Uplift Modeling"}</h1>
+          <p>
+            {activeTab === "rfm"
+              ? data?.method ?? "Proxy segmentation: MRR x tenure for monetary value; seat utilization for engagement."
+              : "Uplift framework: Identifies Persuadables vs Sleeping Dogs to maximize intervention ROI."}
+          </p>
         </div>
         <div style={{ display: "flex", gap: "10px" }}>
-          <button
-            className="button secondary"
-            onClick={handleExportSegmentCustomers}
-            disabled={!data?.items?.length && !data?.segments?.length}
-          >
-            <Download size={15} /> Export RFM Segments CSV
-          </button>
+          {activeTab === "rfm" ? (
+            <button
+              className="button secondary"
+              onClick={handleExportSegmentCustomers}
+              disabled={!data?.items?.length && !data?.segments?.length}
+            >
+              <Download size={15} /> Export RFM Segments CSV
+            </button>
+          ) : (
+            <button
+              className="button secondary"
+              onClick={handleExportUpliftCsv}
+              disabled={!upliftData}
+            >
+              <Download size={15} /> Export Uplift Matrix CSV
+            </button>
+          )}
           <button className="button secondary" onClick={state.refresh}>
             <RefreshCw size={15} /> Refresh
           </button>
         </div>
       </div>
 
-      <section className="panel">
-        <div className="panel-heading">
-          <div>
-            <span className="eyebrow">Portfolio distribution</span>
-            <h2>Customer count by segment</h2>
+      {/* Tab Switcher */}
+      <div style={{ display: "flex", gap: "12px", marginBottom: "20px", borderBottom: "1px solid var(--border-color, #e2e8f0)", paddingBottom: "8px" }}>
+        <button
+          onClick={() => setActiveTab("rfm")}
+          style={{
+            padding: "8px 16px",
+            background: "none",
+            border: "none",
+            borderBottom: `2.5px solid ${activeTab === "rfm" ? "#6366f1" : "transparent"}`,
+            fontWeight: 700,
+            fontSize: "14px",
+            color: activeTab === "rfm" ? "#6366f1" : "#64748b",
+            cursor: "pointer",
+          }}
+        >
+          RFM Behavioral Segments
+        </button>
+        <button
+          onClick={() => setActiveTab("uplift")}
+          style={{
+            padding: "8px 16px",
+            background: "none",
+            border: "none",
+            borderBottom: `2.5px solid ${activeTab === "uplift" ? "#6366f1" : "transparent"}`,
+            fontWeight: 700,
+            fontSize: "14px",
+            color: activeTab === "uplift" ? "#6366f1" : "#64748b",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+          }}
+        >
+          <span>Causal Uplift Matrix (2x2)</span>
+          <span style={{ fontSize: "11px", padding: "2px 6px", background: "#eef2ff", color: "#4f46e5", borderRadius: "10px", fontWeight: 700 }}>
+            Advanced
+          </span>
+        </button>
+      </div>
+
+      {activeTab === "rfm" ? (
+        <section className="panel">
+          <div className="panel-heading">
+            <div>
+              <span className="eyebrow">Portfolio distribution</span>
+              <h2>Customer count by segment</h2>
+            </div>
           </div>
+          {data?.segments && data.segments.length > 0 ? (
+            <TrendChart
+              data={data.segments.map((item) => ({
+                name: item.name,
+                value: item.customers,
+              }))}
+              type="bar"
+            />
+          ) : (
+            <div className="empty-state">No RFM segment data returned.</div>
+          )}
+        </section>
+      ) : (
+        <div>
+          {upliftData?.quadrants ? (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+              {/* Persuadables */}
+              <div className="panel" style={{ borderLeft: "4px solid #ef4444" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                  <div>
+                    <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "#dc2626" }}>
+                      Priority 1 · Critical ROI
+                    </span>
+                    <h2 style={{ fontSize: "16px", margin: "2px 0 0" }}>{upliftData.quadrants.persuadables.title}</h2>
+                  </div>
+                  <strong style={{ fontSize: "20px", color: "#dc2626" }}>
+                    {upliftData.quadrants.persuadables.count} ({upliftData.quadrants.persuadables.share_pct}%)
+                  </strong>
+                </div>
+                <p style={{ fontSize: "12px", color: "#64748b", marginBottom: "12px" }}>
+                  {upliftData.quadrants.persuadables.description}
+                </p>
+                <div style={{ padding: "10px", background: "#fef2f2", borderRadius: "8px", fontSize: "12px", color: "#991b1b", marginBottom: "10px" }}>
+                  <b>Prescribed Play:</b> {upliftData.quadrants.persuadables.recommended_strategy}
+                </div>
+                <div style={{ fontSize: "12px", fontWeight: 600, color: "#334155" }}>
+                  Exposed MRR: ${upliftData.quadrants.persuadables.total_mrr_usd.toLocaleString()} ({upliftData.quadrants.persuadables.mrr_share_pct}% of MRR)
+                </div>
+              </div>
+
+              {/* Sure Things */}
+              <div className="panel" style={{ borderLeft: "4px solid #22c55e" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                  <div>
+                    <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "#16a34a" }}>
+                      Organic Stability
+                    </span>
+                    <h2 style={{ fontSize: "16px", margin: "2px 0 0" }}>{upliftData.quadrants.sure_things.title}</h2>
+                  </div>
+                  <strong style={{ fontSize: "20px", color: "#16a34a" }}>
+                    {upliftData.quadrants.sure_things.count} ({upliftData.quadrants.sure_things.share_pct}%)
+                  </strong>
+                </div>
+                <p style={{ fontSize: "12px", color: "#64748b", marginBottom: "12px" }}>
+                  {upliftData.quadrants.sure_things.description}
+                </p>
+                <div style={{ padding: "10px", background: "#f0fdf4", borderRadius: "8px", fontSize: "12px", color: "#166534", marginBottom: "10px" }}>
+                  <b>Prescribed Play:</b> {upliftData.quadrants.sure_things.recommended_strategy}
+                </div>
+                <div style={{ fontSize: "12px", fontWeight: 600, color: "#334155" }}>
+                  Protected MRR: ${upliftData.quadrants.sure_things.total_mrr_usd.toLocaleString()} ({upliftData.quadrants.sure_things.mrr_share_pct}% of MRR)
+                </div>
+              </div>
+
+              {/* Lost Causes */}
+              <div className="panel" style={{ borderLeft: "4px solid #94a3b8" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                  <div>
+                    <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "#64748b" }}>
+                      Low Yield Winback
+                    </span>
+                    <h2 style={{ fontSize: "16px", margin: "2px 0 0" }}>{upliftData.quadrants.lost_causes.title}</h2>
+                  </div>
+                  <strong style={{ fontSize: "20px", color: "#64748b" }}>
+                    {upliftData.quadrants.lost_causes.count} ({upliftData.quadrants.lost_causes.share_pct}%)
+                  </strong>
+                </div>
+                <p style={{ fontSize: "12px", color: "#64748b", marginBottom: "12px" }}>
+                  {upliftData.quadrants.lost_causes.description}
+                </p>
+                <div style={{ padding: "10px", background: "#f8fafc", borderRadius: "8px", fontSize: "12px", color: "#475569", marginBottom: "10px" }}>
+                  <b>Prescribed Play:</b> {upliftData.quadrants.lost_causes.recommended_strategy}
+                </div>
+                <div style={{ fontSize: "12px", fontWeight: 600, color: "#334155" }}>
+                  At-Risk MRR: ${upliftData.quadrants.lost_causes.total_mrr_usd.toLocaleString()} ({upliftData.quadrants.lost_causes.mrr_share_pct}% of MRR)
+                </div>
+              </div>
+
+              {/* Sleeping Dogs */}
+              <div className="panel" style={{ borderLeft: "4px solid #f59e0b" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                  <div>
+                    <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "#d97706" }}>
+                      Caution · Do Not Disturb
+                    </span>
+                    <h2 style={{ fontSize: "16px", margin: "2px 0 0" }}>{upliftData.quadrants.sleeping_dogs.title}</h2>
+                  </div>
+                  <strong style={{ fontSize: "20px", color: "#d97706" }}>
+                    {upliftData.quadrants.sleeping_dogs.count} ({upliftData.quadrants.sleeping_dogs.share_pct}%)
+                  </strong>
+                </div>
+                <p style={{ fontSize: "12px", color: "#64748b", marginBottom: "12px" }}>
+                  {upliftData.quadrants.sleeping_dogs.description}
+                </p>
+                <div style={{ padding: "10px", background: "#fffbeb", borderRadius: "8px", fontSize: "12px", color: "#b45309", marginBottom: "10px" }}>
+                  <b>Prescribed Play:</b> {upliftData.quadrants.sleeping_dogs.recommended_strategy}
+                </div>
+                <div style={{ fontSize: "12px", fontWeight: 600, color: "#334155" }}>
+                  Quiet MRR: ${upliftData.quadrants.sleeping_dogs.total_mrr_usd.toLocaleString()} ({upliftData.quadrants.sleeping_dogs.mrr_share_pct}% of MRR)
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="loading-state">
+              <RefreshCw className="spin" size={18} /> Loading causal uplift matrix...
+            </div>
+          )}
         </div>
-        {data?.segments && data.segments.length > 0 ? (
-          <TrendChart
-            data={data.segments.map((item) => ({
-              name: item.name,
-              value: item.customers,
-            }))}
-            type="bar"
-          />
-        ) : (
-          <div className="empty-state">No RFM segment data returned.</div>
-        )}
-      </section>
+      )}
     </State>
   );
 }

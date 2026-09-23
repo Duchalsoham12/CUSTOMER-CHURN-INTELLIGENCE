@@ -1,10 +1,10 @@
-import { Bell, ChevronDown, Command, LayoutDashboard, Moon, Search, Settings, ShieldAlert, Sparkles, Sun, Target, UploadCloud, Users, WalletCards } from "lucide-react";
+import { Bell, ChevronDown, Command, LayoutDashboard, Moon, Search, Settings, ShieldAlert, Sliders, Sparkles, Sun, Target, UploadCloud, Users, WalletCards } from "lucide-react";
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
 const navGroups = [
   { label: "Workspace", items: [{ to: "/dashboard", label: "Overview", icon: LayoutDashboard }, { to: "/customers", label: "Customers", icon: Users }, { to: "/churn", label: "Churn analytics", icon: ShieldAlert }, { to: "/segments", label: "Segments", icon: Target }] },
-  { label: "Analysis", items: [{ to: "/cohorts", label: "Cohorts", icon: Command }, { to: "/revenue-risk", label: "Revenue at risk", icon: WalletCards }, { to: "/retention", label: "Action center", icon: Sparkles }, { to: "/model", label: "Model performance", icon: Settings }] },
+  { label: "Analysis", items: [{ to: "/cohorts", label: "Cohorts", icon: Command }, { to: "/revenue-risk", label: "Revenue at risk", icon: WalletCards }, { to: "/retention", label: "Action center", icon: Sparkles }, { to: "/simulator", label: "What-If Simulator", icon: Sliders }, { to: "/model", label: "Model performance", icon: Settings }] },
 ];
 
 export function AppLayout() {

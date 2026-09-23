@@ -8,6 +8,7 @@ import { LiveCustomersPage } from "./pages/LiveCustomersPage";
 import { LiveCustomerProfilePage } from "./pages/LiveCustomerProfilePage";
 import { LiveChurnPage, LiveRevenuePage, LiveSegmentsPage, UnavailableAnalyticsPage } from "./pages/LiveAnalyticsPages";
 import { LiveUploadPage } from "./pages/LiveUploadPage";
+import { LiveSimulatorPage } from "./pages/LiveSimulatorPage";
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
           />
           <Route path="/revenue-risk" element={<LiveRevenuePage />} />
           <Route path="/retention" element={<LiveRetentionPage />} />
+          <Route path="/simulator" element={<LiveSimulatorPage />} />
           <Route path="/model" element={<LiveModelPage />} />
           <Route path="/upload" element={<LiveUploadPage />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
