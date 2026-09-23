@@ -42,18 +42,26 @@ jobs:
         env:
           DATABASE_URL: postgresql://customer_intelligence:change-me@localhost:15432/customer_intelligence
         run: |
-          PYTHONPATH=backend python backend/scripts/import_full_dataset.py
           PYTHONPATH=backend python -c "
           import psycopg
           from pathlib import Path
           conn = psycopg.connect('postgresql://customer_intelligence:change-me@localhost:15432/customer_intelligence')
           with conn.cursor() as cur:
               cur.execute(Path('sql/001_schema.sql').read_text(encoding='utf-8'))
+          conn.commit()
+          conn.close()
+          "
+          PYTHONPATH=backend python backend/scripts/import_full_dataset.py
+          PYTHONPATH=backend python backend/scripts/persist_segments.py
+          PYTHONPATH=backend python -c "
+          import psycopg
+          from pathlib import Path
+          conn = psycopg.connect('postgresql://customer_intelligence:change-me@localhost:15432/customer_intelligence')
+          with conn.cursor() as cur:
               cur.execute(Path('sql/powerbi_views.sql').read_text(encoding='utf-8'))
           conn.commit()
           conn.close()
           "
-          PYTHONPATH=backend python backend/scripts/persist_segments.py
 
       - name: Run Pytest Suite
         env:
