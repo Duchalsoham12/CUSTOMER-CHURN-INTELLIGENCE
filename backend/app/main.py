@@ -19,6 +19,7 @@ from app.api.revenue_risk import router as revenue_risk_router
 from app.api.health import router as health_router
 from app.api.upload import router as upload_router
 from app.api.advanced import router as advanced_router
+from app.api.assistant import router as assistant_router
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -92,3 +93,4 @@ app.include_router(analytics_v2_router, prefix="/api")
 app.include_router(retention_router, prefix="/api")
 app.include_router(monitoring_router, prefix="/api")
 app.include_router(advanced_router, prefix="/api")
+app.include_router(assistant_router, prefix="/api")

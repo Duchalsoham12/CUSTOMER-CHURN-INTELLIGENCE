@@ -48,4 +48,7 @@ export const api = {
   getActionHistory: (customerId: string) => request<any>(`/retention/history/${encodeURIComponent(customerId)}`),
   logAction: (body: { customer_id: string; action_type: string; channel?: string; tone?: string; notes: string; performed_by?: string }) =>
     request<any>("/retention/log-action", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }),
+  getAiSuggestions: () => request<Array<{ id: string; label: string; question: string }>>("/assistant/suggestions"),
+  askAiAssistant: (question: string, history?: any[]) =>
+    request<any>("/assistant/query", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question, history }) }),
 };
