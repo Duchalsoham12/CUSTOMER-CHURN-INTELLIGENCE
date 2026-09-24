@@ -40,27 +40,35 @@ jobs:
 
       - name: Initialize PostgreSQL Schema & Data
         env:
-          DATABASE_URL: postgresql://customer_intelligence:change-me@localhost:15432/customer_intelligence
+          DATABASE_URL: postgresql+psycopg://customer_intelligence:change-me@localhost:15432/customer_intelligence
         run: |
           PYTHONPATH=backend python -c "
-          import psycopg
+          import psycopg, time
           from pathlib import Path
-          conn = psycopg.connect('postgresql://customer_intelligence:change-me@localhost:15432/customer_intelligence')
-          with conn.cursor() as cur:
-              cur.execute(Path('sql/001_schema.sql').read_text(encoding='utf-8'))
-          conn.commit()
-          conn.close()
+          for i in range(30):
+              try:
+                  with psycopg.connect('postgresql://customer_intelligence:change-me@localhost:15432/customer_intelligence') as conn:
+                      with conn.cursor() as cur:
+                          cur.execute(Path('sql/001_schema.sql').read_text(encoding='utf-8'))
+                      conn.commit()
+                  print('PostgreSQL schema initialized successfully.')
+                  break
+              except Exception as e:
+                  print(f'Waiting for PostgreSQL (attempt {i+1}/30): {e}')
+                  time.sleep(1)
+          else:
+              raise RuntimeError('Could not connect to PostgreSQL after 30 seconds')
           "
           PYTHONPATH=backend python backend/scripts/import_full_dataset.py
           PYTHONPATH=backend python backend/scripts/persist_segments.py
           PYTHONPATH=backend python -c "
           import psycopg
           from pathlib import Path
-          conn = psycopg.connect('postgresql://customer_intelligence:change-me@localhost:15432/customer_intelligence')
-          with conn.cursor() as cur:
-              cur.execute(Path('sql/powerbi_views.sql').read_text(encoding='utf-8'))
-          conn.commit()
-          conn.close()
+          with psycopg.connect('postgresql://customer_intelligence:change-me@localhost:15432/customer_intelligence') as conn:
+              with conn.cursor() as cur:
+                  cur.execute(Path('sql/powerbi_views.sql').read_text(encoding='utf-8'))
+              conn.commit()
+          print('PowerBI views created successfully.')
           "
 
       - name: Run Pytest Suite

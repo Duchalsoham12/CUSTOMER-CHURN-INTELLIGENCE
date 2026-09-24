@@ -6,9 +6,15 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.core.config import get_settings
 
 settings = get_settings()
-connect_args = {"connect_timeout": 3} if "postgres" in settings.database_url else {}
-engine = create_engine(settings.database_url, pool_pre_ping=True, connect_args=connect_args)
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+raw_url = settings.database_url
+if raw_url.startswith("postgresql://"):
+    db_url = raw_url.replace("postgresql://", "postgresql+psycopg://", 1)
+else:
+    db_url = raw_url
+
+connect_args = {"connect_timeout": 5} if "postgres" in db_url else {}
+engine = create_engine(db_url, pool_pre_ping=True, connect_args=connect_args) if db_url else None
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False) if engine else None
 
 
 def get_db() -> Iterator[Session]:

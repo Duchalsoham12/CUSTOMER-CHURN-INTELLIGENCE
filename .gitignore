@@ -21,7 +21,11 @@ venv/
 *.onnx
 ml/artifacts/*.joblib
 ml/artifacts/*.pkl
+!ml/artifacts/churn_logistic_v1.joblib
+!ml/artifacts/churn_rf_v1.joblib
+!ml/artifacts/churn_xgb_v1.joblib
 data/raw/*
+!data/raw/full.jsonl
 data/processed/*
 data/external/*
 !data/raw/.gitkeep

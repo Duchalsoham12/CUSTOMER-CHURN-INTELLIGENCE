@@ -21,7 +21,8 @@ def import_dataset() -> tuple[int, int]:
         for line in DATA_PATH.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
-    with psycopg.connect(DATABASE_URL) as connection:
+    raw_conn_url = DATABASE_URL.replace("postgresql+psycopg://", "postgresql://")
+    with psycopg.connect(raw_conn_url) as connection:
         with connection.cursor() as cursor:
             for record in records:
                 cursor.execute(
