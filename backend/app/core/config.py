@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     api_host: str = "0.0.0.0"
     api_port: int = 8000
-    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174"
+    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,http://localhost:5180,http://127.0.0.1:5180,http://localhost:3000,http://127.0.0.1:3000"
     database_url: str = ""
     secret_key: str = ""
     model_path: str = "ml/artifacts/churn_rf_v1.joblib"

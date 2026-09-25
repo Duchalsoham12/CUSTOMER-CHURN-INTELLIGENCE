@@ -13,7 +13,8 @@ import {
   simulateFallback,
 } from "./fallbackData";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000/api";
+const defaultPort = typeof window !== "undefined" && (window.location.port === "5180" || window.location.port === "3000") ? "8080" : "8000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? `http://127.0.0.1:${defaultPort}/api`;
 
 export const isLiveApi = { status: true };
 
