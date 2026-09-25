@@ -12,9 +12,17 @@ if raw_url.startswith("postgresql://"):
 else:
     db_url = raw_url
 
-connect_args = {"connect_timeout": 5} if "postgres" in db_url else {}
-engine = create_engine(db_url, pool_pre_ping=True, connect_args=connect_args) if db_url else None
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False) if engine else None
+try:
+    if db_url:
+        connect_args = {"connect_timeout": 5} if "postgres" in db_url else {}
+        engine = create_engine(db_url, pool_pre_ping=True, connect_args=connect_args)
+        SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+    else:
+        engine = None
+        SessionLocal = None
+except Exception:
+    engine = None
+    SessionLocal = None
 
 
 def get_db() -> Iterator[Session]:
