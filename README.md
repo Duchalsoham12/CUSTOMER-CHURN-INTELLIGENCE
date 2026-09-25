@@ -213,11 +213,13 @@ python -m venv .venv
 # Install backend dependencies
 pip install -r backend/requirements.txt
 
-# Start FastAPI server
+# Start FastAPI server (Port 8000 or alternative 8080)
 $env:PYTHONPATH="backend"
 uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+# Or run on alternative port if 8000 is occupied:
+# uvicorn app.main:app --host 127.0.0.1 --port 8080
 ```
-- API Root: [http://localhost:8000](http://localhost:8000)
+- API Root: [http://localhost:8000](http://localhost:8000) (auto-redirects to `/docs`)
 - Swagger Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ### 2. Frontend Setup
@@ -225,8 +227,10 @@ uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 cd frontend
 npm install
 npm run dev
+# Or run on alternative port if 5173 is occupied:
+# npm run dev -- --port 5180
 ```
-- Web Application: [http://localhost:5173](http://localhost:5173)
+- Web Application: [http://localhost:5173](http://localhost:5173) (or [http://localhost:5180](http://localhost:5180))
 
 ---
 
@@ -330,11 +334,16 @@ Refer to [`docs/screenshot-checklist.md`](docs/screenshot-checklist.md) for full
 
 ---
 
-## 22. Future Improvements
+## 22. Feature Roadmap & Status
+- [x] **TreeSHAP Explainability**: Deployed interactive waterfall visualizations directly in Customer 360 view.
+- [x] **GenAI Retention Copilot**: Multi-tone outreach generators (Empathetic, Direct, Value-Reinforcing, Escalation).
+- [x] **"What-If" Scenario Simulator**: Real-time policy adjustments with financial ROI and preserved MRR models.
+- [x] **"Talk to Your Data" Natural Language Assistant**: Text-to-intelligence chat drawer with safe read-only queries.
+- [x] **Causal ML & Uplift Matrix**: 2x2 targeting quadrant identifying Persuadables vs Sleeping Dogs.
+- [x] **Real-Time Alert Dispatchers**: Webhook notifications for Slack and Discord with formatted alert payloads.
+- [x] **Audit Trail & Action Logging**: Chronological timeline tracking all CSM interventions and outcomes.
 - [ ] Implement JWT / OAuth2 authentication and role-based access control (RBAC).
 - [ ] Integrate prospective event-streaming ingestion (Kafka / AWS Kinesis) for real-time activity tracking.
-- [ ] Connect webhook dispatchers for Slack and email notifications on high-priority retention actions.
-- [ ] Deploy SHAP explainability visualizations directly in the React customer profile view.
 
 ---
 
